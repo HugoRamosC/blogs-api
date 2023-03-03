@@ -28,14 +28,14 @@ const verifyToken = async (token) => {
 
   try {
     const decryptedData = await jwt.verify(token, secret);
-    return {token:decryptedData};
+    return { token: decryptedData };
   } catch (e) {
     const error = {
       message: 'Invalid fields',
     };
-    error.status = statusHTTP.BAD_REQUEST,
+    error.status = statusHTTP.BAD_REQUEST;
+    throw error;
   }
-
 };
 
 module.exports = {
