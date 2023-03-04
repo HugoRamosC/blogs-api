@@ -6,4 +6,9 @@ const statusHTTP = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-module.exports = statusHTTP;
+const mapError = (type) => statusHTTP[type];
+
+module.exports = {
+  statusHTTP,
+  mapError,
+};
