@@ -4,9 +4,7 @@ const statusHTTP = require('../utils/statusHTTPCodes');
 
 const authenticate = async ({ email, password }) => {
   if (!email || !password) {
-    const error = {
-      message: 'Some required fields are missing',
-    };
+    const error = { message: 'Some required fields are missing' };
     error.status = statusHTTP.BAD_REQUEST;
     throw error;
   }
@@ -22,7 +20,11 @@ const authenticate = async ({ email, password }) => {
     throw error;
   }
   console.log('auth.service 24 >>>>>>>>>>', user);
-  const token = generateToken(user.dataValues)
+  const token = generateToken(user.dataValues);
 
   return { token };
+};
+
+module.exports = {
+  authenticate,
 };
