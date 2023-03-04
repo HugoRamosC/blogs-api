@@ -8,8 +8,9 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-const generateToken = ({ id, email }) => {
-  jwt.sign({ id, email }, secret, jwtConfig);
+const generateToken = ({ email }) => {
+  const token = jwt.sign({ email }, secret, jwtConfig);
+  return token;
 };
 
 const verifyToken = async (token) => {
@@ -18,7 +19,7 @@ const verifyToken = async (token) => {
     error.status = statusHTTP.ANAUTHORIZED;
     throw error;
   }
-
+  
   try {
     const decryptedData = await jwt.verify(token, secret);
     return { token: decryptedData };
