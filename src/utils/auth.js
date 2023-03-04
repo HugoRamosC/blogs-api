@@ -8,14 +8,7 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-const generateToken = ({ id, email, password }) => {
-  if (!email || !password) {
-    const error = {
-      message: 'Some required fields are missing',
-    };
-    error.status = statusHTTP.BAD_REQUEST;
-    throw error;
-  }
+const generateToken = ({ id, email }) => {
   jwt.sign({ id, email }, secret, jwtConfig);
 };
 
