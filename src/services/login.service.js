@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const { generateToken } = require('../utils/auth');
-const statusHTTP = require('../utils/statusHTTPCodes');
+const { statusHTTP } = require('../utils/statusHTTPCodes');
 
 const authenticate = async ({ email, password }) => {
   if (!email || !password) {
@@ -10,17 +10,17 @@ const authenticate = async ({ email, password }) => {
   }
 
   const user = await User.findOne({
-    attributes: ['id', 'displayName', 'email'],
+    attributes: ['email'],
     where: { email, password },
   });
 
   if (!user) {
-    const error = { message: 'Invalid user or password' };
-    error.status = statusHTTP.ANAUTHORIZED;
+    const error = { message: 'Invalid fields' };
+    error.status = statusHTTP.BAD_REQUEST;
     return error;
   }
-  const token = generateToken(user.dataValues);
 
+  const token = generateToken(user.dataValues);
   return { token };
 };
 
