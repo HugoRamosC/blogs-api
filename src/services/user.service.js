@@ -22,7 +22,7 @@ const existingUser = async (email) => {
 const create = async ({ displayName, email, password, image }) => {
   const inputError = inputValidate(displayName, email, password);
   if (inputError) return inputError;
-  
+
   const userError = await existingUser(email);
   if (userError) return userError;
 
@@ -32,6 +32,20 @@ const create = async ({ displayName, email, password, image }) => {
   return token;
 };
 
+const getByEmail = async (email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) return { status: statusHTTP.NOT_FOUND, message: 'User not found' };
+  return user;
+};
+
+const getAllUsers = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  if (!users) return { status: statusHTTP.NOT_FOUND, message: 'Users not found' };
+  return users;
+};
+
 module.exports = {
   create,
+  getByEmail,
+  getAllUsers,
 };

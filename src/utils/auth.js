@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const statusHTTP = require('./statusHTTPCodes');
+const { statusHTTP } = require('./statusHTTPCodes');
 
 const secret = process.env.JWT_SECRET;
 
@@ -13,23 +13,18 @@ const generateToken = ({ email }) => {
   return token;
 };
 
-const validateToken = async (token) => {
+const validateToken = (token) => {
   if (!token) {
     const error = { message: 'Token not found' };
     error.status = statusHTTP.ANAUTHORIZED;
     return error;
   }
   
-  try {
-    const decryptedData = await jwt.verify(token, secret);
-    return { token: decryptedData };
-  } catch (e) {
-    const error = {
-      message: 'Invalid fields',
-    };
-    error.status = statusHTTP.BAD_REQUEST;
-    return error;
-  }
+    const decryptedData = jwt.verify(token, secret);
+    return { decoded: decryptedData };
+    // const error = { message: 'Expired or invalid fields' };
+    // error.status = 400;
+    // return error;
 };
 
 module.exports = {

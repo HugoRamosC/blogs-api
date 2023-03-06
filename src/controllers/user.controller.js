@@ -13,6 +13,32 @@ const create = async (req, res) => {
   }
 };
 
+const getByEmail = async (req, res) => {
+  try {
+    const user = await userService.getByEmail(req.user.dataValues.email);
+    if (!user) return res.status(user.status).json(user.message);
+    return res.status(statusHTTP.OK).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
+    .json({ message: 'Internal server error' });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    if (!users) return res.status(users.status).json(users.message);
+    return res.status(statusHTTP.OK).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   create,
+  getByEmail,
+  getAllUsers,
 };
