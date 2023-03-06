@@ -13,11 +13,11 @@ const generateToken = ({ email }) => {
   return token;
 };
 
-const verifyToken = async (token) => {
+const validateToken = async (token) => {
   if (!token) {
-    const error = new Error('missing token');
+    const error = { message: 'Token not found' };
     error.status = statusHTTP.ANAUTHORIZED;
-    throw error;
+    return error;
   }
   
   try {
@@ -28,11 +28,11 @@ const verifyToken = async (token) => {
       message: 'Invalid fields',
     };
     error.status = statusHTTP.BAD_REQUEST;
-    throw error;
+    return error;
   }
 };
 
 module.exports = {
   generateToken,
-  verifyToken,
+  validateToken,
 };
