@@ -32,11 +32,11 @@ const create = async ({ displayName, email, password, image }) => {
   return token;
 };
 
-const getByEmail = async (email) => {
-  const user = await User.findOne({ where: { email } });
-  if (!user) return { status: statusHTTP.NOT_FOUND, message: 'User not found' };
-  return user;
-};
+// const getByEmail = async (email) => {
+//   const user = await User.findOne({ where: { email } });
+//   if (!user) return { status: statusHTTP.NOT_FOUND, message: 'User not found' };
+//   return user;
+// };
 
 const getAllUsers = async () => {
   const users = await User.findAll({ attributes: { exclude: ['password'] } });
@@ -44,8 +44,15 @@ const getAllUsers = async () => {
   return users;
 };
 
+const getUserById = async (id) => {
+  const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
+  if (!user) return { status: statusHTTP.NOT_FOUND, message: 'User does not exist' };
+  return user;
+};
+
 module.exports = {
   create,
-  getByEmail,
+  // getByEmail,
   getAllUsers,
+  getUserById,
 };
