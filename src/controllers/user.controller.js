@@ -13,18 +13,6 @@ const create = async (req, res) => {
   }
 };
 
-// const getByEmail = async (req, res) => {
-//   try {
-//     const user = await userService.getByEmail(req.user.dataValues.email);
-//     if (!user) return res.status(user.status).json(user.message);
-//     return res.status(statusHTTP.OK).json(user);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
-//     .json({ message: 'Internal server error' });
-//   }
-// };
-
 const getAllUsers = async (req, res) => {
   try {
     const users = await userService.getAllUsers();
@@ -40,7 +28,6 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const response = await userService.getUserById(req.params.id);
-    // console.log('>>>>>>>>>', user);
     if (response.status) return res.status(response.status).json({ message: response.message });
     return res.status(statusHTTP.OK).json(response);
   } catch (error) {
@@ -52,7 +39,6 @@ const getUserById = async (req, res) => {
 
 module.exports = {
   create,
-  // getByEmail,
   getAllUsers,
   getUserById,
 };

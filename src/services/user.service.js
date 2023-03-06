@@ -32,12 +32,6 @@ const create = async ({ displayName, email, password, image }) => {
   return token;
 };
 
-// const getByEmail = async (email) => {
-//   const user = await User.findOne({ where: { email } });
-//   if (!user) return { status: statusHTTP.NOT_FOUND, message: 'User not found' };
-//   return user;
-// };
-
 const getAllUsers = async () => {
   const users = await User.findAll({ attributes: { exclude: ['password'] } });
   if (!users) return { status: statusHTTP.NOT_FOUND, message: 'Users not found' };
@@ -52,7 +46,6 @@ const getUserById = async (id) => {
 
 module.exports = {
   create,
-  // getByEmail,
   getAllUsers,
   getUserById,
 };
