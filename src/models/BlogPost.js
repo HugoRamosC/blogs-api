@@ -16,15 +16,15 @@ module.exports = (sequelize, DataTypes) => {
     published: DataTypes.DATE,
     updated: DataTypes.DATE,
   },
-  {
-    timestamps: false,
-    underscored: true,
-    tableName: 'blog_posts',
-  });
+    {
+      timestamps: false,
+      underscored: true,
+      tableName: 'blog_posts',
+    });
 
   BlogPost.associate = (models) => {
     BlogPost.belongsTo(models.User,
-      { foreignKey: 'id', as: 'users' });
+      { foreignKey: 'userId', as: 'users' });
   };
 
   return BlogPost;
