@@ -14,17 +14,17 @@ const createCategory = async (req, res) => {
   }
 };
 
-// const getAllUsers = async (req, res) => {
-//   try {
-//     const users = await userService.getAllUsers();
-//     if (!users) return res.status(users.status).json(users.message);
-//     return res.status(statusHTTP.OK).json(users);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
-//       .json({ message: 'Internal server error' });
-//   }
-// };
+const getAllCategories = async (_req, res) => {
+  try {
+    const response = await categoryService.getAllCategories();
+    if (!response) return res.status(response.status).json(response.message);
+    return res.status(statusHTTP.OK).json(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Internal server error' });
+  }
+};
 
 // const getUserById = async (req, res) => {
 //   try {
@@ -40,6 +40,6 @@ const createCategory = async (req, res) => {
 
 module.exports = {
   createCategory,
-  // getAllUsers,
+  getAllCategories,
   // getUserById,
 };

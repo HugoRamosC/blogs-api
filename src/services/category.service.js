@@ -1,6 +1,6 @@
 const { Category } = require('../models');
 // const { generateToken } = require('../utils/auth');
-// const { statusHTTP } = require('../utils/statusHTTPCodes');
+const { statusHTTP } = require('../utils/statusHTTPCodes');
 const inputValidations = require('./validation/validations');
 
 // const inputValidate = (name, email, password) => {
@@ -27,11 +27,11 @@ const createCategory = async ({ name }) => {
   return newCategory;
 };
 
-// const getAllUsers = async () => {
-//   const users = await User.findAll({ attributes: { exclude: ['password'] } });
-//   if (!users) return { status: statusHTTP.NOT_FOUND, message: 'Users not found' };
-//   return users;
-// };
+const getAllCategories = async () => {
+  const users = await Category.findAll();
+  if (!users) return { status: statusHTTP.NOT_FOUND, message: 'Categories not found' };
+  return users;
+};
 
 // const getUserById = async (id) => {
 //   const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
@@ -41,6 +41,6 @@ const createCategory = async ({ name }) => {
 
 module.exports = {
   createCategory,
-  // getAllUsers,
+  getAllCategories,
   // getUserById,
 };
