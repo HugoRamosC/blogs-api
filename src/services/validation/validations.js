@@ -3,6 +3,7 @@ const {
   emailSchema,
   passwordSchema,
   categoryNameSchema,
+  postSchema,
 } = require('./schemas');
 const { statusHTTP } = require('../../utils/statusHTTPCodes');
 
@@ -30,9 +31,16 @@ const validateCategoryName = (name) => {
   return false;
 };
 
+const validatePostInputs = ({ title, content, categoryIds }) => {
+  const { error } = postSchema.validate({ title, content, categoryIds });
+  if (error) return { status: statusHTTP.BAD_REQUEST, message: error.message };
+  return false;
+};
+
 module.exports = {
   validateName,
   validateEmail,
   validatePassword,
   validateCategoryName,
+  validatePostInputs,
 };
