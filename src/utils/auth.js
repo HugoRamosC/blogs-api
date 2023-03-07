@@ -22,9 +22,6 @@ const validateToken = (token) => {
   
     const decryptedData = jwt.verify(token, secret);
     return { decoded: decryptedData };
-    // const error = { message: 'Expired or invalid fields' };
-    // error.status = 400;
-    // return error;
 };
 
 module.exports = {
