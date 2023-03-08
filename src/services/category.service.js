@@ -11,9 +11,9 @@ const createCategory = async ({ name }) => {
 };
 
 const getAllCategories = async () => {
-  const users = await Category.findAll();
-  if (!users) return { status: statusHTTP.NOT_FOUND, message: 'Categories not found' };
-  return users;
+  const categories = await Category.findAll();
+  if (!categories) return { status: statusHTTP.NOT_FOUND, message: 'Categories not found' };
+  return categories;
 };
 
 module.exports = {

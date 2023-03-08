@@ -1,6 +1,5 @@
 const { validateToken } = require('../utils/auth');
 const { statusHTTP } = require('../utils/statusHTTPCodes');
-// const userService = require('../services/user.service');
 
 module.exports = async (req, res, next) => {
   try {
@@ -8,10 +7,13 @@ module.exports = async (req, res, next) => {
     const response = validateToken(token);
     if (response.status) return res.status(response.status).json({ message: response.message });
 
-    req.user = { email: response.decoded.email };
+    req.user = { 
+      id: response.decoded.id,
+      email: response.decoded.email,
+    };
     next();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(statusHTTP.ANAUTHORIZED).json({ message: 'Expired or invalid token' });
   }
 };

@@ -35,11 +35,11 @@ const postSchema = Joi.object().keys({
   categoryIds: Joi.array().items(
     Joi.number().required(),
   ).min(1).required(),
-}).messages({
-  'string.base': requiredMissing,
-  'array.base': requiredMissing,
-  'array.min': '"{#key}" must be greater than or equal to {#limit}',
 });
+// .messages({
+//   'any.required': requiredMissing,
+//   'array.min': '"{#key}" must be greater than or equal to {#limit}',
+// });
 
 module.exports = {
   displayNameSchema,
