@@ -1,7 +1,9 @@
-const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
+const { BlogPost, PostCategory, User, Category, sequelize, Sequelize } = require('../models');
 const { statusHTTP } = require('../utils/statusHTTPCodes');
 const { getAllCategories } = require('./category.service');
 const inputValidations = require('./validation/validations');
+
+const { Op } = Sequelize;
 
 const bodyInputsErrors = async ({ title, content, categoryIds }) => {
   const inputError = inputValidations.validatePostInputs({ title, content, categoryIds });
@@ -62,7 +64,8 @@ const getAllPosts = async () => {
 };
 
 const getPostById = async ({ id }) => {
-  const post = await BlogPost.findOne({ where: { id },
+  const post = await BlogPost.findOne({
+    where: { id },
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
@@ -70,6 +73,25 @@ const getPostById = async ({ id }) => {
   });
   if (!post) return { status: statusHTTP.NOT_FOUND, message: 'Post does not exist' };
   return post;
+};
+
+// https://stackoverflow.com/questions/34255792/sequelize-how-to-search-multiple-columns
+// https://stackoverflow.com/questions/20695062/sequelize-or-condition-object
+const getPostsBySearch = async ({ q }) => {
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        [{ title: { [Op.like]: `%${q}%` } }],
+        [{ content: { [Op.like]: `%${q}%` } }],
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
+    ],
+  });
+  if (posts.length === 0) return { status: statusHTTP.OK, message: [] };
+  return posts;
 };
 
 const updatePost = async ({ title, content, userId }, { id }) => {
@@ -103,6 +125,7 @@ module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  getPostsBySearch,
   updatePost,
   deletePost,
 };

@@ -25,15 +25,26 @@ const getAllPosts = async (_req, res) => {
   }
 };
 
-const getPostById = async (req, res) => {
+const getPostById = async (req, res, next) => {
   try {
     const response = await postService.getPostById(req.params);
     if (response.status) return res.status(response.status).json({ message: response.message });
     return res.status(statusHTTP.OK).json(response);
   } catch (error) {
     console.error(error);
-    return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Internal server error' });
+    return next(error);
+  }
+};
+
+const getPostsBySearch = async (req, res, next) => {
+  try {
+    const response = await postService.getPostsBySearch(req.query);
+    console.log('controller>>>>>>', response);
+    if (response.status) return res.status(response.status).json(response.message);
+    return res.status(statusHTTP.OK).json(response);
+  } catch (error) {
+    console.error(error);
+    return next(error);
   }
 };
 
@@ -68,6 +79,7 @@ module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  getPostsBySearch,
   updatePost,
   deletePost,
 };
