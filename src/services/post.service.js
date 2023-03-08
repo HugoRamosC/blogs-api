@@ -72,8 +72,25 @@ const getPostById = async ({ id }) => {
   return post;
 };
 
+const updatePost = async ({ title, content, userId }, { id }) => {
+  const post = await getPostById({ id });
+  console.log('service >>>>>>>>', post.userId, userId);
+  if (
+    +post.userId !== +userId
+  ) return { status: statusHTTP.ANAUTHORIZED, message: 'Unauthorized user' };
+  const categoryIds = post.categories.map((cat) => cat.id);
+  const inputError = await bodyInputsErrors({ title, content, categoryIds });
+  if (inputError) return inputError;
+
+  post.title = title;
+  post.content = content;
+
+  return post;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  updatePost,
 };

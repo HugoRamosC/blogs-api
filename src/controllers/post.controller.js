@@ -37,8 +37,23 @@ const getPostById = async (req, res) => {
   }
 };
 
+const updatePost = async (req, res) => {
+  try {
+    console.log('controller>>>>>>>>>', req.user);
+    req.body.userId = req.user.id;
+    const response = await postService.updatePost(req.body, req.params);
+    if (response.status) return res.status(response.status).json({ message: response.message });
+    return res.status(statusHTTP.OK).json(response);
+  } catch (error) {
+    console.error(error);
+    return res.status(statusHTTP.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  updatePost,
 };
