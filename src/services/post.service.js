@@ -1,4 +1,4 @@
-const { BlogPost, PostCategory, sequelize } = require('../models');
+const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
 const { statusHTTP } = require('../utils/statusHTTPCodes');
 const { getAllCategories } = require('./category.service');
 const inputValidations = require('./validation/validations');
@@ -48,6 +48,17 @@ const createPost = async ({ title, content, categoryIds }, { id }) => {
   return result;
 };
 
+const getAllPosts = async () => {
+  const posts = await BlogPost.findAll({ include: [
+    { model: User, as: 'user', attributes: { exclude: ['password'] } },
+    { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
+  ] });
+  if (!posts) return { status: statusHTTP.NOT_FOUND, message: 'Posts not found' };
+  // const postsArr = posts.map((p) => p.dataValues);
+  return posts;
+};
+
 module.exports = {
   createPost,
+  getAllPosts,
 };
