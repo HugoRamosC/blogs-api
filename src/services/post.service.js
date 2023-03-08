@@ -6,8 +6,10 @@ const inputValidations = require('./validation/validations');
 const bodyInputsErrors = async ({ title, content, categoryIds }) => {
   const inputError = inputValidations.validatePostInputs({ title, content, categoryIds });
   if (inputError) {
-    return { status: statusHTTP.BAD_REQUEST,
-      message: 'Some required fields are missing' };
+    return {
+      status: statusHTTP.BAD_REQUEST,
+      message: 'Some required fields are missing',
+    };
   }
 
   const dbCategories = await getAllCategories();
@@ -49,16 +51,29 @@ const createPost = async ({ title, content, categoryIds }, { id }) => {
 };
 
 const getAllPosts = async () => {
-  const posts = await BlogPost.findAll({ include: [
-    { model: User, as: 'user', attributes: { exclude: ['password'] } },
-    { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
-  ] });
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
+    ],
+  });
   if (!posts) return { status: statusHTTP.NOT_FOUND, message: 'Posts not found' };
-  // const postsArr = posts.map((p) => p.dataValues);
   return posts;
+};
+
+const getPostById = async ({ id }) => {
+  const post = await BlogPost.findOne({ where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
+    ],
+  });
+  if (!post) return { status: statusHTTP.NOT_FOUND, message: 'Post does not exist' };
+  return post;
 };
 
 module.exports = {
   createPost,
   getAllPosts,
+  getPostById,
 };
