@@ -39,8 +39,7 @@ const getPostById = async (req, res) => {
 
 const updatePost = async (req, res) => {
   try {
-    console.log('controller>>>>>>>>>', req.user);
-    req.body.userId = req.user.id;
+    req.body.userId = req.user.userId;
     const response = await postService.updatePost(req.body, req.params);
     if (response.status) return res.status(response.status).json({ message: response.message });
     return res.status(statusHTTP.OK).json(response);
@@ -51,9 +50,24 @@ const updatePost = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res, next) => {
+  try {
+    console.log('controller>>>>>>', req.user);
+    const response = await postService.deletePost(req.user, req.params);
+    if (
+      response.status
+    ) return res.status(response.status).json({ message: response.message });
+    return res.status(statusHTTP.NO_CONTENT).send();
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };

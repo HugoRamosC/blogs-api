@@ -25,13 +25,13 @@ const bodyInputsErrors = async ({ title, content, categoryIds }) => {
   return null;
 };
 
-const createPost = async ({ title, content, categoryIds }, { id }) => {
+const createPost = async ({ title, content, categoryIds }, { userId }) => {
   const error = await bodyInputsErrors({ title, content, categoryIds });
   if (error) return error;
 
   const result = await sequelize.transaction(async (t) => {
     const newPost = await BlogPost.create(
-      { userId: id, title, content },
+      { userId, title, content },
       { transaction: t },
     );
 
@@ -88,9 +88,21 @@ const updatePost = async ({ title, content, userId }, { id }) => {
   return post;
 };
 
+const deletePost = async ({ userId }, { id }) => {
+  const post = await getPostById({ id });
+  if (post.status) return post;
+  if (
+    +post.userId !== +userId
+  ) return { status: statusHTTP.ANAUTHORIZED, message: 'Unauthorized user' };
+  await post.destroy({ where: { id } });
+
+  return true;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };

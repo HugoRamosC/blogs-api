@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
     if (response.status) return res.status(response.status).json({ message: response.message });
 
     req.user = { 
-      id: response.decoded.id,
+      userId: response.decoded.id,
       email: response.decoded.email,
     };
     next();

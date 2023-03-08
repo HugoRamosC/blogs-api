@@ -19,7 +19,6 @@ const validateToken = (token) => {
     error.status = statusHTTP.ANAUTHORIZED;
     return error;
   }
-
   const decryptedData = jwt.verify(token, secret);
   return { decoded: decryptedData };
 };
