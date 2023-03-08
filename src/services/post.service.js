@@ -74,7 +74,6 @@ const getPostById = async ({ id }) => {
 
 const updatePost = async ({ title, content, userId }, { id }) => {
   const post = await getPostById({ id });
-  console.log('service >>>>>>>>', post.userId, userId);
   if (
     +post.userId !== +userId
   ) return { status: statusHTTP.ANAUTHORIZED, message: 'Unauthorized user' };
@@ -84,6 +83,7 @@ const updatePost = async ({ title, content, userId }, { id }) => {
 
   post.title = title;
   post.content = content;
+  await post.save();
 
   return post;
 };
