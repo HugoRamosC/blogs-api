@@ -19,7 +19,6 @@ const authenticate = async ({ email, password }) => {
     error.status = statusHTTP.BAD_REQUEST;
     return error;
   }
-  console.log('loginService>>>>>>', user);
   const token = generateToken(user.dataValues);
   return { token };
 };
